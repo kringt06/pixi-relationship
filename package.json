@@ -1,0 +1,49 @@
+{
+  "name": "pixi-relationship",
+  "version": "1.0.0",
+  "description": "pixi.js to relationship",
+  "repository": "https://github.com/364734461/pixi-relationship.git",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "sideEffects": false,
+  "contributors": [
+    "MuChang06 <364734461@qq.com>"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "start": "cd website && npm run start",
+    "build": "cross-env NODE_ENV=production rollup -cm",
+    "build:dev": "rollup -cwm",
+    "prepublish": "npm run build"
+  },
+  "peerDependencies": {
+    "babel-plugin-import": "^1.11.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "rimraf": "^2.6.3",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "rollup": "^1.11.3",
+    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-buble": "^0.19.6",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-terser": "^4.0.4",
+    "rollup-watch": "^4.3.1"
+  },
+  "dependencies": {
+    "pixi.js": "^5.0.0-X"
+  }
+}
