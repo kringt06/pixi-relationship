@@ -9,7 +9,12 @@ npm install pixi-relationship
 ```js
 import PixiRelationship from 'pixi-relationship'
 
-new PixiRelationship({...})
+const app = new PixiRelationship({
+  containerID: "container",
+  backgroundColor: 0xceefff
+});
+
+app.init();
 ```
 
 ### API
@@ -17,4 +22,4 @@ new PixiRelationship({...})
 
 ### License
 
-https://github.com/364734461/pixi-relationship
+ISC

@@ -8,11 +8,12 @@ import builtins from "rollup-plugin-node-builtins";
 import pkg from "./package.json";
 
 const plugins = [
-  babel({
-    exclude: ["node_modules/**"]
-  }),
   builtins(),
   resolve(),
+  babel({
+    babelrc: false,
+    exclude: ["node_modules/**"]
+  }),
   commonjs({
     namedExports: {
       "resource-loader": ["Resource"]
