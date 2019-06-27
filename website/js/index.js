@@ -1,3 +1,8 @@
 import PixiRelationship from "../../dist";
+import "../css/index.less";
 
-new PixiRelationship();
+const testImg = require("../images/test.jpg");
+
+new PixiRelationship({
+  containerID: "container"
+});
