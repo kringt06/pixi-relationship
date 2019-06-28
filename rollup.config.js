@@ -4,20 +4,24 @@ import resolve from "rollup-plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
 import commonjs from "rollup-plugin-commonjs";
 import builtins from "rollup-plugin-node-builtins";
+// import image from "rollup-plugin-img";
 
 import pkg from "./package.json";
 
 const plugins = [
   builtins(),
+  // image({
+  //   limit: 1024 * 100
+  // }),
   resolve(),
-  babel({
-    babelrc: false,
-    exclude: ["node_modules/**"]
-  }),
   commonjs({
     namedExports: {
       "resource-loader": ["Resource"]
     }
+  }),
+  babel({
+    babelrc: false,
+    exclude: ["node_modules/**"]
   }),
   buble()
 ];

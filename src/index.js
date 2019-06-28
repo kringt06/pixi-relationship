@@ -83,8 +83,14 @@ class CanvasApp extends Application {
   }
 
   initMain() {
-    const { stage } = this;
-    const mainContainer = new MainContainer();
+    const { stage, screen, options } = this;
+    const mainContainer = new MainContainer({
+      width: screen.width,
+      height: screen.height,
+      placeholderImg: options.placeholderImg,
+      backgroundRoundColor: options.backgroundRoundColor,
+      onClick: options.onClick
+    });
     stage.addChild(mainContainer);
   }
 
