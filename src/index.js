@@ -1,7 +1,7 @@
-import { Application, settings, PRECISION } from "pixi.js";
+import { Application, settings, PRECISION } from "pixi.js"
 
-import BackgroundContainer from "./mod/background";
-import MainContainer from "./mod/main";
+import BackgroundContainer from "./mod/background"
+import MainContainer from "./mod/main"
 
 const defaultProps = {
   containerID: "pixi-relationship",
@@ -9,7 +9,7 @@ const defaultProps = {
   applicationOptions: {
     backgroundColor: 0xceefff
   }
-};
+}
 
 /**
  * props:
@@ -20,25 +20,23 @@ const defaultProps = {
  */
 class CanvasApp extends Application {
   constructor(props = {}) {
-    const options = Object.assign({}, defaultProps, props);
-    const domElement = document.getElementById(options.containerID);
+    const options = Object.assign({}, defaultProps, props)
+    const domElement = document.getElementById(options.containerID)
 
     super(
-      Object.assign(
-        {},
-        defaultProps.applicationOptions,
-        options.applicationOptions,
-        { autoStart: false, resizeTo: domElement }
-      )
-    );
+      Object.assign({}, defaultProps.applicationOptions, options.applicationOptions, {
+        autoStart: false,
+        resizeTo: domElement
+      })
+    )
 
-    this.options = options;
+    this.options = options
 
-    settings.PRECISION_FRAGMENT = PRECISION.HIGH;
+    settings.PRECISION_FRAGMENT = PRECISION.HIGH
 
-    domElement.appendChild(this.view);
+    domElement.appendChild(this.view)
 
-    this.domElement = domElement;
+    this.domElement = domElement
   }
 
   /**
@@ -46,7 +44,7 @@ class CanvasApp extends Application {
    * @member {object}
    */
   get resources() {
-    return this.loader.resources;
+    return this.loader.resources
   }
 
   /**
@@ -55,60 +53,60 @@ class CanvasApp extends Application {
    */
   load(manifest, callback) {
     this.loader.add(manifest).load(() => {
-      callback && callback();
-      this.init();
-    });
+      callback && callback()
+      this.init()
+    })
   }
 
   init() {
-    this.initBackground();
-    this.initMain();
+    this.initBackground()
+    this.initMain()
 
-    this.addEvent();
+    this.addEvent()
 
-    this.start();
+    this.start()
   }
 
   initBackground() {
-    const { stage, screen } = this;
-    const radius = 50;
+    const { stage, screen } = this
+    const radius = 50
     const bgContainer = new BackgroundContainer({
       radius,
       backgroundRoundColor: this.options.backgroundRoundColor,
       width: screen.width,
       height: screen.height,
       num: (screen.width * screen.height) / Math.pow(radius, 2) / 30
-    });
-    stage.addChild(bgContainer);
+    })
+    stage.addChild(bgContainer)
   }
 
   initMain() {
-    const { stage, screen, options } = this;
+    const { stage, screen, options } = this
     const mainContainer = new MainContainer({
       width: screen.width,
       height: screen.height,
       placeholderImg: options.placeholderImg,
       backgroundRoundColor: options.backgroundRoundColor,
       onClick: options.onClick
-    });
-    stage.addChild(mainContainer);
+    })
+    stage.addChild(mainContainer)
   }
 
   addEvent() {
-    this.ticker.add(this.animate, this);
+    this.ticker.add(this.animate, this)
   }
 
   removeEvent() {
-    this.ticker.remove(this.animate);
+    this.ticker.remove(this.animate)
   }
 
   animate(delta) {
-    const { stage } = this;
+    const { stage } = this
     Array.isArray(stage.children) &&
       stage.children.forEach(item => {
-        typeof item.animate === "function" && item.animate(delta);
-      });
+        typeof item.animate === "function" && item.animate(delta)
+      })
   }
 }
 
-export default CanvasApp;
+export default CanvasApp

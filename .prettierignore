@@ -1,0 +1,28 @@
+**/*.md
+**/*.svg
+**/*.html
+
+website/
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# file
+.DS_Store
+yarn.lock
+.next
+package-lock.json
+npm-debug.log*
+node_modules/
+resources/
+.github/
+build/
+dist/
+logs/
+test/coverage
+server/stores/*.txt

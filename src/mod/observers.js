@@ -1,5 +1,5 @@
-import createObservers from "../utils/createObservers";
+import createObservers from "../utils/createObservers"
 
-const observers = new createObservers("pixi");
+const observers = new createObservers("pixi")
 
-export default observers;
+export default observers
