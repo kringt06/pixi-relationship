@@ -11,6 +11,10 @@ const defaultProps = {
   r: 50
 }
 
+const maxZoom = 1
+const minZoom = 0.1
+const disScale = 0.01
+
 /**
  * options
  *      R                    (*)                               R > r
@@ -27,21 +31,40 @@ class MainContainer extends Container {
     this.x = this.options.width / 2
     this.y = this.options.height / 2
 
-    // this.scale.set(1);
-
     this.onChangeCardFn = this.onChangeCard.bind(this)
+    this.onChangeScaleFn = this.onChangeScale.bind(this)
 
     this.init()
 
     this.addEvent()
   }
 
+  onChangeScale(delta) {
+    let x = this.scale._x
+    // 放大
+    if (delta < 0) {
+      x -= disScale
+      if (x >= minZoom) {
+        this.scale.set(x)
+      }
+    }
+    // 缩小
+    else if (delta > 0) {
+      x += disScale
+      if (x <= maxZoom) {
+        this.scale.set(x)
+      }
+    }
+  }
+
   addEvent() {
     Observers.on("change-card-key", this.onChangeCardFn)
+    Observers.on("mousewheel-change", this.onChangeScaleFn)
   }
 
   removeEvent() {
     Observers.off("change-card-key", this.onChangeCardFn)
+    Observers.off("mousewheel-change", this.onChangeScaleFn)
   }
 
   init() {

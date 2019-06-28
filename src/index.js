@@ -2,6 +2,7 @@ import { Application, settings, PRECISION } from "pixi.js"
 
 import BackgroundContainer from "./mod/background"
 import MainContainer from "./mod/main"
+import observers from "./mod/observers"
 
 const defaultProps = {
   containerID: "pixi-relationship",
@@ -26,7 +27,8 @@ class CanvasApp extends Application {
     super(
       Object.assign({}, defaultProps.applicationOptions, options.applicationOptions, {
         autoStart: false,
-        resizeTo: domElement
+        resizeTo: domElement,
+        antialias: true
       })
     )
 
@@ -94,10 +96,14 @@ class CanvasApp extends Application {
 
   addEvent() {
     this.ticker.add(this.animate, this)
+
+    this.domElement.addEventListener("mousewheel", this.mousewheelFunc)
   }
 
   removeEvent() {
     this.ticker.remove(this.animate)
+
+    this.domElement.removeEventListener("mousewheel", this.mousewheelFunc)
   }
 
   animate(delta) {
@@ -106,6 +112,19 @@ class CanvasApp extends Application {
       stage.children.forEach(item => {
         typeof item.animate === "function" && item.animate(delta)
       })
+  }
+
+  mousewheelFunc(event) {
+    if (event && event.preventDefault) {
+      event.preventDefault()
+    } else {
+      window.event.returnValue = false
+      return false
+    }
+
+    const e = window.event || event
+    const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail))
+    observers.trigger("mousewheel-change", delta)
   }
 }
 

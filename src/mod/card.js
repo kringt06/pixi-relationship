@@ -145,17 +145,11 @@ class CardSprite extends Sprite {
 
   onButtonOver() {
     this.isOver = true
-    if (this.isdown) {
-      return
-    }
     this.onOver && this.onOver()
   }
 
   onButtonOut() {
     this.isOver = false
-    if (this.isdown) {
-      return
-    }
     this.onOut && this.onOut()
   }
 
