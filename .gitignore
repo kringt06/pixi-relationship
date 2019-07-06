@@ -26,7 +26,6 @@ yarn.lock
 # auto generated
 _site/
 .cache
-public
 
 # auto src generated
 src/**/*.ts

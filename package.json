@@ -11,7 +11,8 @@
   ],
   "license": "ISC",
   "files": [
-    "dist"
+    "dist",
+    "public"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
@@ -23,13 +24,15 @@
   "peerDependencies": {},
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "cross-env": "^5.2.0",
     "rimraf": "^2.6.3",
     "rollup": "^1.11.3",
+    "rollup-plugin-alias": "^1.5.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-buble": "^0.19.6",
     "rollup-plugin-commonjs": "^9.3.4",
-    "rollup-plugin-img": "^1.1.0",
+    "rollup-plugin-url": "^2.2.2",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^4.2.3",
