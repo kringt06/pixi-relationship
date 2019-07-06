@@ -15,19 +15,17 @@ class CardSprite extends Sprite {
 
     this.id = randomString(32)
 
-    this.onTriggerClearHoverFn = this.onTriggerClearHover.bind(this)
-
     this.init()
 
     this.addEvent()
   }
 
   addEvent() {
-    Observers.on("change-card-key", this.onTriggerClearHoverFn)
+    Observers.on("change-card-key", this.onTriggerClearHover)
   }
 
   removeEvent() {
-    Observers.off("change-card-key", this.onTriggerClearHoverFn)
+    Observers.off("change-card-key", this.onTriggerClearHover)
   }
 
   init() {
@@ -153,7 +151,7 @@ class CardSprite extends Sprite {
     this.onOut && this.onOut()
   }
 
-  onTriggerClearHover({ id }) {
+  onTriggerClearHover = ({ id }) => {
     if (id !== this.id) {
       this.lightbulb.clear()
       this.lightbulb.lineStyle(5, 0x000000, 0.3)

@@ -18,6 +18,9 @@ const defaultProps = {
  *          containerID                   pixi-relationship                 string
  *          applicationOptions            null                              object<PIXI.Application - options>
  *          backgroundRoundColor          0xceefff                          0x...  number
+ *          placeholderImg
+ *          onClick
+ *          
  */
 class CanvasApp extends Application {
   constructor(props = {}) {
