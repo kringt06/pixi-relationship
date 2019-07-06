@@ -11,10 +11,6 @@ const defaultProps = {
   r: 50
 }
 
-const maxZoom = 1
-const minZoom = 0.1
-const disScale = 0.01
-
 /**
  * options
  *      R                    (*)                               R > r
@@ -38,12 +34,10 @@ class MainContainer extends Container {
 
   addEvent() {
     Observers.on("change-card-key", this.onChangeCard)
-    Observers.on("mousewheel-change", this.onChangeScale)
   }
 
   removeEvent() {
     Observers.off("change-card-key", this.onChangeCard)
-    Observers.off("mousewheel-change", this.onChangeScale)
   }
 
   init() {
@@ -76,24 +70,6 @@ class MainContainer extends Container {
 
   onChangeCard = sprite => {
     console.log(sprite)
-  }
-
-  onChangeScale = delta => {
-    let x = this.scale._x
-    // 放大
-    if (delta < 0) {
-      x -= disScale
-      if (x >= minZoom) {
-        this.scale.set(x)
-      }
-    }
-    // 缩小
-    else if (delta > 0) {
-      x += disScale
-      if (x <= maxZoom) {
-        this.scale.set(x)
-      }
-    }
   }
 }
 

@@ -1,8 +1,8 @@
 import { Application, settings, PRECISION } from "pixi.js"
+import { Viewport } from "pixi-viewport"
 
 import BackgroundContainer from "./mod/background"
 import MainContainer from "./mod/main"
-import observers from "./mod/observers"
 
 const defaultProps = {
   containerID: "pixi-relationship",
@@ -20,7 +20,7 @@ const defaultProps = {
  *          backgroundRoundColor          0xceefff                          0x...  number
  *          placeholderImg
  *          onClick
- *          
+ *
  */
 class CanvasApp extends Application {
   constructor(props = {}) {
@@ -86,7 +86,23 @@ class CanvasApp extends Application {
   }
 
   initMain() {
-    const { stage, screen, options } = this
+    const { stage, screen, options, renderer } = this
+
+    const viewport = new Viewport({
+      screenWidth: screen.width,
+      screenHeight: screen.height,
+      worldWidth: screen.width,
+      worldHeight: screen.height,
+      interaction: renderer.plugins.interaction
+    })
+    stage.addChild(viewport)
+
+    viewport
+      .drag()
+      .pinch()
+      .wheel()
+      .decelerate()
+
     const mainContainer = new MainContainer({
       width: screen.width,
       height: screen.height,
@@ -94,19 +110,15 @@ class CanvasApp extends Application {
       backgroundRoundColor: options.backgroundRoundColor,
       onClick: options.onClick
     })
-    stage.addChild(mainContainer)
+    viewport.addChild(mainContainer)
   }
 
   addEvent() {
     this.ticker.add(this.animate, this)
-
-    this.domElement.addEventListener("mousewheel", this.mousewheelFunc)
   }
 
   removeEvent() {
     this.ticker.remove(this.animate)
-
-    this.domElement.removeEventListener("mousewheel", this.mousewheelFunc)
   }
 
   animate(delta) {
@@ -115,19 +127,6 @@ class CanvasApp extends Application {
       stage.children.forEach(item => {
         typeof item.animate === "function" && item.animate(delta)
       })
-  }
-
-  mousewheelFunc(event) {
-    if (event && event.preventDefault) {
-      event.preventDefault()
-    } else {
-      window.event.returnValue = false
-      return false
-    }
-
-    const e = window.event || event
-    const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail))
-    observers.trigger("mousewheel-change", delta)
   }
 }
 
