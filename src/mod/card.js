@@ -10,7 +10,7 @@ const defaultProps = {
 class CardSprite extends Sprite {
   constructor(options) {
     super()
-
+    
     this.options = Object.assign({}, defaultProps, options)
 
     this.id = randomString(32)
@@ -30,7 +30,7 @@ class CardSprite extends Sprite {
 
   init() {
     const data = this.options.data
-
+console.log(data)
     this.position.set(data.coor[0], data.coor[1])
     this.anchor.set(0.5, 0.5)
     this.interactive = true

@@ -1,3 +1,5 @@
+import LineBezier from "./bezier"
+
 export function randomString(len) {
   len = len || 32
   const $chars =
@@ -58,7 +60,6 @@ export function dealSecondLevel(data, R, r) {
 
   for (let i = 0; i < len; i++) {
     arr.push({
-      // R,
       r,
       radius,
       data: data[i],
@@ -112,4 +113,18 @@ export function angleToRadian(angle) {
 
 export function radianToAngle(radian) {
   return radian / (Math.PI / 180)
+}
+
+export function dealThirdLevel(data, r) {
+  if (!Array.isArray(data) || data.length <= 0) {
+    return []
+  }
+
+  const coorLineBezier = new LineBezier(r)
+
+  const res = []
+
+  console.log(res)
+
+  return res
 }
