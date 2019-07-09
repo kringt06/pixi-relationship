@@ -33,19 +33,148 @@ function random0x(num = 0, d = 10) {
   return Math.random() * d * (Math.random() > 0.5 ? 1 : -1) + num
 }
 
-// R > r (*)
-export function dealSecondLevel(data, R, r) {
-  if (!Array.isArray(data) || data.length <= 0) {
+export function angleToRadian(angle) {
+  return (Math.PI / 180) * angle
+}
+
+export function radianToAngle(radian) {
+  return radian / (Math.PI / 180)
+}
+
+// 计算点位
+export function dealNodes({ data = {}, R = 80, r = 50 }) {
+  const { nodes, links } = data
+  const res = {
+    nodes: {},
+    links
+  }
+  const level_1 = {}
+  const level_2 = {}
+  // 初始化数据
+  Array.isArray(nodes) &&
+    nodes.forEach(item => {
+      let obj
+      // 第一维度
+      if (item.level === 0) {
+        obj = Object.assign({}, item, {
+          r: R,
+          coor: [0, 0],
+          visible: true
+        })
+      }
+      // 第二维度
+      else if (item.level === 1) {
+        obj = Object.assign({}, item, {
+          r,
+          visible: true
+        })
+        level_1[item.id] = obj
+      }
+      // 第三维度
+      else if (item.level === 2) {
+        obj = Object.assign({}, item, {
+          r,
+          visible: false
+        })
+        level_2[item.id] = obj
+      }
+
+      obj && (res.nodes[item.id] = obj)
+    })
+
+  // 建立关系连接
+  Array.isArray(links) &&
+    links.forEach(item => {
+      addLinks(res.nodes, {
+        id: item.from,
+        linkId: item.to,
+        name: item.name
+      })
+      addLinks(res.nodes, {
+        id: item.to,
+        linkId: item.from,
+        name: item.name
+      })
+    })
+
+  const secondLevelArr = dealSecondLevel(level_1, R, r)
+  secondLevelArr.forEach(item => {
+    res.nodes[item.id].coor = item.coor
+    const links = res.nodes[item.id].links
+    for (let i = 0, l = links.length; i < l; i++) {
+      if (typeof level_2[links[i].id] === "object" && !level_2[links[i].id].isUse) {
+        level_2[links[i].id].isUse = true
+        if (!Array.isArray(item.treeLinks)) {
+          item.treeLinks = []
+        }
+        item.treeLinks.push(links[i])
+      }
+    }
+  })
+
+  const coorLineBezier = new LineBezier(r)
+
+  secondLevelArr.forEach((item, index) => {
+    dealThirdLevel(coorLineBezier, item, res.nodes)
+  })
+
+  console.log(res)
+  return res
+}
+
+function addLinks(obj, item) {
+  if (typeof obj[item.id] !== "object") {
+    return
+  }
+
+  if (!Array.isArray(obj[item.id].links)) {
+    obj[item.id].links = []
+  }
+  obj[item.id].links.push({
+    id: item.linkId,
+    name: item.name
+  })
+}
+
+function dealThirdLevel(coorLineBezier, data, nodes) {
+  if (typeof data !== "object" || !Array.isArray(data.treeLinks) || data.treeLinks.length <= 0) {
     return []
   }
 
-  const len = data.length
+  data.treeLinks.forEach((item, index) => {
+    const offset = Array.isArray(data.coor) ? data.coor : [0, 0]
+    let coor = coorLineBezier.getCoor(index)
+    // 变换起始角度
+    coor = [coor[1], -1 * coor[0]]
+    // 添加旋转角度
+    coor = angleToCorr(coor, data.angle)
+    // 添加偏移量
+    nodes[item.id].coor = [coor[0] + offset[0], coor[1] + offset[1]]
+  })
+}
+
+function angleToCorr(coor, angle) {
+  const alpha = angleToRadian(angle)
+  return [
+    coor[0] * Math.cos(alpha) - coor[1] * Math.sin(alpha),
+    coor[0] * Math.sin(alpha) + coor[1] * Math.cos(alpha)
+  ]
+}
+
+// R > r (*)
+function dealSecondLevel(obj, R, r) {
+  const keysArr = Object.keys(obj)
+  if (!Array.isArray(keysArr) || keysArr.length <= 0) {
+    return []
+  }
+
+  const len = keysArr.length
   const angle = 360 / len
   const radiusMin = 2 * (r + R)
   let arr = []
   let radius = radiusMin
   let deviationAngle = 0
-  if (data.length > 2) {
+  if (keysArr.length > 2) {
     const angle = 360 / len
     const distanceMin = 4 * r
     const sinAngle = Math.sin(angleToRadian(angle / 2)) * 2
@@ -59,72 +188,13 @@ export function dealSecondLevel(data, R, r) {
   }
 
   for (let i = 0; i < len; i++) {
+    const angleNew = angle * i - deviationAngle
     arr.push({
-      r,
-      radius,
-      data: data[i],
-      coor: dealCoorByRadius(radius, angle * i - deviationAngle)
+      angle: angleNew,
+      id: obj[keysArr[i]].id,
+      coor: angleToCorr([0, -1 * radius], angleNew)
     })
   }
 
   return arr
-}
-
-// xy第1、4象限中线为起点，顺时针转动
-function dealCoorByRadius(radius, angle) {
-  let ax
-  let ay
-  let aAngle
-  // 1
-  if (angle <= 90) {
-    ax = 1
-    ay = 1
-    aAngle = angle
-  }
-  // 2
-  else if (angle <= 180) {
-    ax = 1
-    ay = -1
-    aAngle = 180 - angle
-  }
-  // 3
-  else if (angle <= 270) {
-    ax = -1
-    ay = -1
-    aAngle = angle - 180
-  }
-  // 4
-  else {
-    ax = -1
-    ay = 1
-    aAngle = 360 - angle
-  }
-
-  const radian = angleToRadian(aAngle)
-  const x = Math.ceil(ax * radius * Math.sin(radian))
-  // canvas坐标轴中Y是反向的，所以 * -1
-  const y = Math.ceil(ay * radius * Math.cos(radian)) * -1
-  return [x, y]
-}
-
-export function angleToRadian(angle) {
-  return (Math.PI / 180) * angle
-}
-
-export function radianToAngle(radian) {
-  return radian / (Math.PI / 180)
-}
-
-export function dealThirdLevel(data, r) {
-  if (!Array.isArray(data) || data.length <= 0) {
-    return []
-  }
-
-  const coorLineBezier = new LineBezier(r)
-
-  const res = []
-
-  console.log(res)
-
-  return res
 }

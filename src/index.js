@@ -20,6 +20,7 @@ const defaultProps = {
  *          backgroundRoundColor          0xceefff                          0x...  number
  *          placeholderImg
  *          onClick
+ *          data
  *
  */
 class CanvasApp extends Application {
@@ -108,7 +109,8 @@ class CanvasApp extends Application {
       height: screen.height,
       placeholderImg: options.placeholderImg,
       backgroundRoundColor: options.backgroundRoundColor,
-      onClick: options.onClick
+      onClick: options.onClick,
+      data: options.data
     })
     viewport.addChild(mainContainer)
   }

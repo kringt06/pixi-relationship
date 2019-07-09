@@ -10,7 +10,7 @@ const defaultProps = {
 class CardSprite extends Sprite {
   constructor(options) {
     super()
-    
+
     this.options = Object.assign({}, defaultProps, options)
 
     this.id = randomString(32)
@@ -30,7 +30,7 @@ class CardSprite extends Sprite {
 
   init() {
     const data = this.options.data
-console.log(data)
+
     this.position.set(data.coor[0], data.coor[1])
     this.anchor.set(0.5, 0.5)
     this.interactive = true
@@ -49,8 +49,8 @@ console.log(data)
 
     let texture
     let focus
-    if (typeof data.data === "object" && data.data.src) {
-      texture = Texture.from(data.data.src)
+    if (data.img) {
+      texture = Texture.from(data.img)
     } else if (this.options.placeholderTexture) {
       texture = this.options.placeholderTexture
     }
@@ -61,28 +61,6 @@ console.log(data)
       imgSprite.height = data.r * 2
       imgSprite.position.set(0, 0)
       imgSprite.anchor.set(0.5, 0.5)
-
-      const nameStyle = new TextStyle({
-        fontFamily:
-          "-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol",
-        fontSize: 70,
-        fontWeight: "bold",
-        fill: [this.options.color, "#666"], // gradient
-        stroke: "#4a1850",
-        strokeThickness: 5,
-        dropShadow: true,
-        dropShadowColor: "#000000",
-        dropShadowBlur: 4,
-        dropShadowAngle: Math.PI / 6,
-        dropShadowDistance: 6,
-        wordWrap: true,
-        wordWrapWidth: 440
-      })
-
-      const nameText = new Text(data.name || "未知姓名", nameStyle)
-      imgSprite.addChild(nameText)
-      nameText.anchor.set(0.5, 0.5)
-      nameText.position.set(0, imgSprite.height)
 
       if (this.options.onClick) {
         focus = new Graphics()
@@ -115,6 +93,27 @@ console.log(data)
         .endFill()
       this.addChild(mask)
       imgSprite.mask = mask
+
+      const nameStyle = new TextStyle({
+        fontFamily:
+          "-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol",
+        fontSize: data.r / 2,
+        fontWeight: "bold",
+        fill: [this.options.color, "#666"], // gradient
+        // stroke: "#4a1850",
+        strokeThickness: 2,
+        dropShadow: true,
+        dropShadowColor: "#000000",
+        dropShadowBlur: 4,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+        wordWrap: true,
+        wordWrapWidth: 440
+      })
+      const nameText = new Text(data.name || "未知姓名", nameStyle)
+      this.addChild(nameText)
+      nameText.anchor.set(0.5, 0.5)
+      nameText.position.set(0, imgSprite.height / 2)
     }
 
     this.onOver = () => {
@@ -158,8 +157,8 @@ console.log(data)
       this.lightbulb.drawCircle(0, 0, this.options.data.r + 4)
     } else {
       this.lightbulb.clear()
-      this.lightbulb.lineStyle(5, 0x000000, 1)
-      this.lightbulb.drawCircle(0, 0, this.options.data.r + 4)
+      this.lightbulb.lineStyle(8, 0x598dff, 1)
+      this.lightbulb.drawCircle(0, 0, this.options.data.r + 10)
     }
   }
 }

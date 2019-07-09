@@ -36,10 +36,17 @@ export default class {
       newThreeBezierArr[this.maxBezierNum - 2],
       newThreeBezierArr[this.maxBezierNum - 1]
     )
+
+    this.newThreeBezierArr = newThreeBezierArr
   }
 
+  /**
+   *
+   * @param {*} index
+   * @param  offset 偏移量 [x, y]
+   */
   getCoor(index) {
-    const { maxBezierNum, radianK, dd } = this
+    const { maxBezierNum, radianK, dd, newThreeBezierArr } = this
 
     let coor
     // 曲线
