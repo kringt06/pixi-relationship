@@ -137,7 +137,7 @@ class MainContainer extends Container {
       links.forEach(item => {
         // 添加当前线
         let isCur = false
-        if (item.to === this.centreCardID) {
+        if (item.from === this.centreCardID) {
           isCur = true
         }
         // 普通背景线

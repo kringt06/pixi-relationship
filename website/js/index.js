@@ -8,6 +8,7 @@ const app = new PixiRelationship({
   placeholderImg: require("../images/test.jpg"),
   onClick: data => {
     console.log("onClick:", data);
+    alert(JSON.stringify(data))
   },
   data: {
     links: data.links,
