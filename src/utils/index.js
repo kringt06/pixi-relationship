@@ -42,11 +42,11 @@ export function radianToAngle(radian) {
 }
 
 // 计算点位
-export function dealNodes({ data = {}, R = 80, r = 50, linksColors }) {
+export function dealNodes({ data = {}, R = 80, r = 50 }) {
   const { nodes, links } = data
   const res = {
-    nodes: {}
-    // links
+    nodes: {},
+    links
   }
   const level_1 = {}
   const level_2 = {}
@@ -58,23 +58,20 @@ export function dealNodes({ data = {}, R = 80, r = 50, linksColors }) {
       if (item.level === 0) {
         obj = Object.assign({}, item, {
           r: R,
-          coor: [0, 0],
-          visible: true
+          coor: [0, 0]
         })
       }
       // 第二维度
       else if (item.level === 1) {
         obj = Object.assign({}, item, {
-          r,
-          visible: true
+          r
         })
         level_1[item.id] = obj
       }
       // 第三维度
       else if (item.level === 2) {
         obj = Object.assign({}, item, {
-          r,
-          visible: false
+          r
         })
         level_2[item.id] = obj
       }
@@ -88,8 +85,7 @@ export function dealNodes({ data = {}, R = 80, r = 50, linksColors }) {
       addLinks(res.nodes, {
         id: item.from,
         linkId: item.to,
-        name: item.name,
-        color: linksColors[+item.type]
+        name: item.name
       })
     })
 
@@ -129,8 +125,7 @@ function addLinks(obj, item) {
   obj[item.id].links.push({
     id: item.linkId,
     linkId: item.id,
-    name: item.name,
-    color: item.color
+    name: item.name
   })
 }
 

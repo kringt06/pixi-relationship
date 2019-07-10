@@ -10,7 +10,7 @@ const defaultProps = {
   applicationOptions: {
     backgroundColor: 0xceefff
   },
-  linksColors: [0xff6b6b, 0x15cb55, 0x1545cb, 0xcb1558]
+  linksColors: [0x71b7ff, 0x509838, 0xfd8888, 0xfff36a]
 }
 
 /**

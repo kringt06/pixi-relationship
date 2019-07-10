@@ -1,13 +1,15 @@
 import { Container, Texture } from "pixi.js"
 
-import { dealNodes, randomString } from "../utils"
+import { dealNodes } from "../utils"
 import Card from "./card"
 import Line from "./line"
 import Observers from "./observers"
+import zIndexConfig from "../utils/zIndex"
 
 const defaultProps = {
   R: 80,
-  r: 50
+  r: 50,
+  lineColor: 0xd2e5ee
 }
 
 /**
@@ -22,8 +24,7 @@ class MainContainer extends Container {
     super()
 
     this.options = Object.assign({}, defaultProps, options)
-
-    this.data = { nodes: {} }
+    this.data = { nodes: {}, links: [] }
     try {
       this.data = dealNodes(this.options)
     } catch (e) {
@@ -35,9 +36,9 @@ class MainContainer extends Container {
 
     this.spriteObj = {}
 
-    this.init()
-
     this.addEvent()
+
+    this.init()
   }
 
   addEvent() {
@@ -56,19 +57,26 @@ class MainContainer extends Container {
 
     const { nodes } = this.data
 
+    // links
+    this.lines = new Line({
+      links: [],
+      nodes,
+      lineColor: this.options.lineColor,
+      zIndex: zIndexConfig.lines[0]
+    })
+    this.addChild(this.lines)
+    // curLines
+    this.curLines = new Line({
+      links: [],
+      nodes,
+      zIndex: zIndexConfig.lines[1]
+    })
+    this.addChild(this.curLines)
+
     Object.keys(nodes).forEach(key => {
       const item = nodes[key]
       if (typeof item === "object" && item.coor) {
-        const id = randomString(32)
-        // links
-        const lines = new Line({
-          links: item.links,
-          nodes,
-          id
-        })
-        this.addChild(lines)
-
-        // card
+        const id = item.id
         const round = new Card({
           color: this.options.backgroundRoundColor,
           data: item,
@@ -79,26 +87,74 @@ class MainContainer extends Container {
         this.addChild(round)
 
         if (item.level === 0) {
-          this.centreCard = round
+          this.centreCardID = id
         }
 
         this.spriteObj[id] = {
-          cardId: item.id,
           id,
-          card: round,
-          lines
+          card: round
         }
       }
     })
-
-    // 设置当前状态
-    this.centreCard && Observers.trigger("change-card-key", this.centreCard)
+    this.centreCardID && Observers.trigger("change-card-key", this.centreCardID)
   }
 
-  onChangeCard = sprite => {
-    const item = this.spriteObj[sprite.id]
+  onChangeCard = id => {
+    Observers.trigger("change-card-zIndex", zIndexConfig.card[0])
 
-    console.log(item)
+    this.centreCardID = id
+    try {
+      // 显示card
+      const item = this.spriteObj[id]
+      item.visible = true
+      item.card.visible = true
+      item.card.zIndex = zIndexConfig.card[2]
+
+      item.card.options.data.links.forEach(item => {
+        if (this.spriteObj[item.id]) {
+          this.spriteObj[item.id].visible = true
+          this.spriteObj[item.id].card.visible = true
+          this.spriteObj[item.id].card.zIndex = zIndexConfig.card[1]
+        }
+      })
+      // 绘制关系网
+      const { curLinks, links } = this.dealLinks()
+      this.lines && this.lines.setLinks(links)
+      this.curLines && this.curLines.setLinks(curLinks)
+    } catch (e) {
+      console.trace(e)
+    }
+  }
+
+  dealLinks = () => {
+    const { links } = this.data
+    const obj = {
+      curLinks: [],
+      links: []
+    }
+
+    Array.isArray(links) &&
+      links.forEach(item => {
+        // 添加当前线
+        let isCur = false
+        if (item.to === this.centreCardID) {
+          isCur = true
+        }
+        // 普通背景线
+        if (
+          this.spriteObj[item.from] &&
+          this.spriteObj[item.from].visible === true &&
+          this.spriteObj[item.to] &&
+          this.spriteObj[item.to].visible === true
+        ) {
+          const link = Object.assign({}, item, {
+            color: this.options.linksColors[+item.type]
+          })
+          obj[isCur ? "curLinks" : "links"].push(link)
+        }
+      })
+
+    return obj
   }
 }
 

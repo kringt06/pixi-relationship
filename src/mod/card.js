@@ -15,20 +15,26 @@ class CardSprite extends Sprite {
 
     this.id = this.options.id
 
-    this.init()
+    this.zIndex = zIndexConfig.card[0]
 
     this.addEvent()
+
+    this.init()
   }
 
   addEvent() {
     Observers.on("change-card-key", this.onTriggerClearHover)
+    Observers.on("change-card-zIndex", this.onTriggerZIndex)
   }
 
   removeEvent() {
     Observers.off("change-card-key", this.onTriggerClearHover)
+    Observers.off("change-card-zIndex", this.onTriggerZIndex)
   }
 
   init() {
+    this.visible = false
+
     const data = this.options.data
 
     this.position.set(data.coor[0], data.coor[1])
@@ -76,7 +82,8 @@ class CardSprite extends Sprite {
               "-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol",
             fontSize: data.r / 3,
             fontWeight: 500,
-            fill: ["#fff"]
+            fill: ["#fff"],
+            align: "center"
           })
         )
         nameTextHover.anchor.set(0.5, 0.5)
@@ -108,7 +115,8 @@ class CardSprite extends Sprite {
         dropShadowAngle: Math.PI / 6,
         dropShadowDistance: 6,
         wordWrap: true,
-        wordWrapWidth: 440
+        wordWrapWidth: 440,
+        align: "center"
       })
       const nameText = new Text(data.name || "未知姓名", nameStyle)
       this.addChild(nameText)
@@ -119,7 +127,7 @@ class CardSprite extends Sprite {
     this.onOver = () => {
       focus && (focus.visible = true)
 
-      Observers.trigger("change-card-key", this)
+      Observers.trigger("change-card-key", this.id)
     }
 
     this.onOut = () => {
@@ -150,18 +158,20 @@ class CardSprite extends Sprite {
     this.onOut && this.onOut()
   }
 
-  onTriggerClearHover = ({ id }) => {
+  onTriggerClearHover = id => {
     if (id !== this.id) {
       this.lightbulb.clear()
       this.lightbulb.lineStyle(5, 0x000000, 0.3)
       this.lightbulb.drawCircle(0, 0, this.options.data.r + 4)
-      this.zIndex = zIndexConfig.card[0]
     } else {
       this.lightbulb.clear()
       this.lightbulb.lineStyle(8, 0x598dff, 1)
       this.lightbulb.drawCircle(0, 0, this.options.data.r + 10)
-      this.zIndex = zIndexConfig.card[2]
     }
+  }
+
+  onTriggerZIndex = zIndex => {
+    this.zIndex = zIndex
   }
 }
 
