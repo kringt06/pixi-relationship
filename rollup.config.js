@@ -50,7 +50,8 @@ if (process.env.NODE_ENV === "production") {
 
 const globals = {
   "pixi.js": "PIXI",
-  "pixi-viewport": "pixi-viewport"
+  "pixi-viewport": "pixi-viewport",
+  "pixi-layers": "pixi-layers"
 }
 
 const external = Object.keys(globals)
@@ -63,6 +64,7 @@ export default [
       { file: pkg.main, format: "cjs", globals },
       { file: pkg.module, format: "es", globals }
     ],
-    plugins
+    plugins,
+    globals
   }
 ]

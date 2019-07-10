@@ -9,7 +9,8 @@ const defaultProps = {
   backgroundRoundColor: 0xceefff,
   applicationOptions: {
     backgroundColor: 0xceefff
-  }
+  },
+  linksColors: [0xff6b6b, 0x15cb55, 0x1545cb, 0xcb1558]
 }
 
 /**
@@ -110,7 +111,8 @@ class CanvasApp extends Application {
       placeholderImg: options.placeholderImg,
       backgroundRoundColor: options.backgroundRoundColor,
       onClick: options.onClick,
-      data: options.data
+      data: options.data,
+      linksColors: options.linksColors
     })
     viewport.addChild(mainContainer)
   }

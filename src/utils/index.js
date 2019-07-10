@@ -42,11 +42,11 @@ export function radianToAngle(radian) {
 }
 
 // 计算点位
-export function dealNodes({ data = {}, R = 80, r = 50 }) {
+export function dealNodes({ data = {}, R = 80, r = 50, linksColors }) {
   const { nodes, links } = data
   const res = {
-    nodes: {},
-    links
+    nodes: {}
+    // links
   }
   const level_1 = {}
   const level_2 = {}
@@ -88,12 +88,8 @@ export function dealNodes({ data = {}, R = 80, r = 50 }) {
       addLinks(res.nodes, {
         id: item.from,
         linkId: item.to,
-        name: item.name
-      })
-      addLinks(res.nodes, {
-        id: item.to,
-        linkId: item.from,
-        name: item.name
+        name: item.name,
+        color: linksColors[+item.type]
       })
     })
 
@@ -132,7 +128,9 @@ function addLinks(obj, item) {
   }
   obj[item.id].links.push({
     id: item.linkId,
-    name: item.name
+    linkId: item.id,
+    name: item.name,
+    color: item.color
   })
 }
 

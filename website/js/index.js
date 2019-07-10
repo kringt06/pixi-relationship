@@ -11,8 +11,9 @@ const app = new PixiRelationship({
   },
   data: {
     links: data.links,
-    nodes: data.nodes
-  }
+    nodes: data.nodes,
+    linksType: ['爱情', '亲情', '友情']
+  },
 });
 
 app.init();

@@ -1,7 +1,7 @@
 import { Graphics, Sprite, Texture, Text, TextStyle } from "pixi.js"
 
-import { randomString } from "../utils"
 import Observers from "./observers"
+import zIndexConfig from "../utils/zIndex"
 
 const defaultProps = {
   color: 0xffffff
@@ -13,7 +13,7 @@ class CardSprite extends Sprite {
 
     this.options = Object.assign({}, defaultProps, options)
 
-    this.id = randomString(32)
+    this.id = this.options.id
 
     this.init()
 
@@ -44,6 +44,7 @@ class CardSprite extends Sprite {
     const lightbulb = new Graphics()
     this.lightbulb = lightbulb
     this.addChild(lightbulb)
+    lightbulb.beginFill(0xffffff)
     lightbulb.lineStyle(5, 0x000000, 0.3)
     lightbulb.drawCircle(0, 0, data.r + 4)
 
@@ -100,7 +101,6 @@ class CardSprite extends Sprite {
         fontSize: data.r / 2,
         fontWeight: "bold",
         fill: [this.options.color, "#666"], // gradient
-        // stroke: "#4a1850",
         strokeThickness: 2,
         dropShadow: true,
         dropShadowColor: "#000000",
@@ -155,10 +155,12 @@ class CardSprite extends Sprite {
       this.lightbulb.clear()
       this.lightbulb.lineStyle(5, 0x000000, 0.3)
       this.lightbulb.drawCircle(0, 0, this.options.data.r + 4)
+      this.zIndex = zIndexConfig.card[0]
     } else {
       this.lightbulb.clear()
       this.lightbulb.lineStyle(8, 0x598dff, 1)
       this.lightbulb.drawCircle(0, 0, this.options.data.r + 10)
+      this.zIndex = zIndexConfig.card[2]
     }
   }
 }
