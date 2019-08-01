@@ -1,6 +1,6 @@
 {
   "name": "pixi-relationship",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "pixi.js to relationship",
   "repository": "https://github.com/364734461/pixi-relationship.git",
   "main": "dist/index.js",
