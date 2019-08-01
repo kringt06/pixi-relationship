@@ -51,7 +51,8 @@ if (process.env.NODE_ENV === "production") {
 const globals = {
   "pixi.js": "PIXI",
   "pixi-viewport": "pixi-viewport",
-  "pixi-layers": "pixi-layers"
+  "pixi-layers": "pixi-layers",
+  "lodash/debounce": "lodash/debounce"
 }
 
 const external = Object.keys(globals)

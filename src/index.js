@@ -1,5 +1,6 @@
 import { Application, settings, PRECISION } from "pixi.js"
 import { Viewport } from "pixi-viewport"
+import debounce from "lodash/debounce"
 
 import BackgroundContainer from "./mod/background"
 import MainContainer from "./mod/main"
@@ -110,7 +111,7 @@ class CanvasApp extends Application {
       interaction: renderer.plugins.interaction
     })
     stage.addChild(viewport)
-
+    this.viewport = viewport
     viewport
       .drag()
       .pinch()
@@ -134,10 +135,19 @@ class CanvasApp extends Application {
 
   addEvent() {
     this.ticker.add(this.animate, this)
+
+    this.debounceResize = debounce(this.resizeViewport, 150)
+    window.addEventListener("resize", this.debounceResize)
   }
 
   removeEvent() {
     this.ticker.remove(this.animate)
+
+    window.removeEventListener("resize", this.debounceResize)
+  }
+
+  resizeViewport = () => {
+    this.viewport && this.viewport.resize()
   }
 
   animate(delta) {

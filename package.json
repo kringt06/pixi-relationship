@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "pixi-viewport": "^4.0.0-beta.3",
-    "pixi.js": "^5.0.0-X"
+    "pixi.js": "^5.0.0-X",
+    "lodash": "^4.17.4"
   }
 }
