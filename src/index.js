@@ -10,15 +10,21 @@ const defaultProps = {
   applicationOptions: {
     backgroundColor: 0xceefff
   },
-  linksColors: [0x71b7ff, 0x509838, 0xfd8888, 0xfff36a]
+  linksColors: [0x71b7ff, 0x509838, 0xfd8888, 0xfff36a],
+  linksTypeLabel: ["爱情", "亲情", "友情"]
 }
 
 /**
  * props:
- *          --key--                         --default--                     --value--
- *          containerID                   pixi-relationship                 string
- *          applicationOptions            null                              object<PIXI.Application - options>
- *          backgroundRoundColor          0xceefff                          0x...  number
+ *          --key--                         --default--                                     --value--
+ *          containerID                   pixi-relationship                                 string
+ *          applicationOptions            null                                              object<PIXI.Application - options>
+ *          backgroundRoundColor          0xceefff                                          0x...  number
+ *          nameStyle                                                                       (options) => PIXI.TextStyle
+ *          borderColor                                                                     0x...  number
+ *          borderColorHover                                                                0x...  number
+ *          linksColors                   [0x71b7ff, 0x509838, 0xfd8888, 0xfff36a]          Array<...> | Object
+ *          linksTypeLabel                ['爱情', '亲情', '友情']                           Array<...> | Object
  *          placeholderImg
  *          onClick
  *          data
@@ -26,6 +32,12 @@ const defaultProps = {
  */
 class CanvasApp extends Application {
   constructor(props = {}) {
+    Object.keys(props).forEach(key => {
+      if (typeof props[key] === "undefined") {
+        delete props[key]
+      }
+    })
+
     const options = Object.assign({}, defaultProps, props)
     const domElement = document.getElementById(options.containerID)
 
@@ -110,9 +122,12 @@ class CanvasApp extends Application {
       height: screen.height,
       placeholderImg: options.placeholderImg,
       backgroundRoundColor: options.backgroundRoundColor,
+      nameStyle: options.nameStyle,
       onClick: options.onClick,
       data: options.data,
-      linksColors: options.linksColors
+      linksColors: options.linksColors,
+      borderColor: options.borderColor,
+      borderColorHover: options.borderColorHover
     })
     viewport.addChild(mainContainer)
   }

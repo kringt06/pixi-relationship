@@ -89,7 +89,10 @@ export function dealNodes({ data = {}, R = 80, r = 50 }) {
       })
     })
 
-  const secondLevelArr = dealSecondLevel(level_1, R, r)
+  const { distance, arr } = dealSecondLevel(level_1, R, r)
+  res.distance = distance
+
+  const secondLevelArr = arr
   secondLevelArr.forEach(item => {
     res.nodes[item.id].coor = item.coor
     const links = res.nodes[item.id].links
@@ -160,7 +163,7 @@ function dealSecondLevel(obj, R, r) {
   if (!Array.isArray(keysArr) || keysArr.length <= 0) {
     return []
   }
-
+  let distance
   const len = keysArr.length
   const angle = 360 / len
   const radiusMin = 2 * (r + R)
@@ -171,7 +174,7 @@ function dealSecondLevel(obj, R, r) {
     const angle = 360 / len
     const distanceMin = 4 * r
     const sinAngle = Math.sin(angleToRadian(angle / 2)) * 2
-    let distance = Math.ceil(radius * sinAngle)
+    distance = Math.ceil(radius * sinAngle)
     if (distance < distanceMin) {
       distance = distanceMin
       radius = Math.ceil(distance / sinAngle)
@@ -189,5 +192,5 @@ function dealSecondLevel(obj, R, r) {
     })
   }
 
-  return arr
+  return { arr, distance }
 }

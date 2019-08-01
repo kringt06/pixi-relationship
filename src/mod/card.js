@@ -4,12 +4,21 @@ import Observers from "./observers"
 import zIndexConfig from "../utils/zIndex"
 
 const defaultProps = {
-  color: 0xffffff
+  color: 0xffffff,
+  nameStyle: undefined,
+  borderColor: 0x000000,
+  borderColorHover: 0x598dff
 }
 
 class CardSprite extends Sprite {
   constructor(options) {
     super()
+
+    Object.keys(options).forEach(key => {
+      if (typeof options[key] === "undefined") {
+        delete options[key]
+      }
+    })
 
     this.options = Object.assign({}, defaultProps, options)
 
@@ -102,22 +111,26 @@ class CardSprite extends Sprite {
       this.addChild(mask)
       imgSprite.mask = mask
 
-      const nameStyle = new TextStyle({
-        fontFamily:
-          "-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol",
-        fontSize: data.r / 2,
-        fontWeight: "bold",
-        fill: [this.options.color, "#666"], // gradient
-        strokeThickness: 2,
-        dropShadow: true,
-        dropShadowColor: "#000000",
-        dropShadowBlur: 4,
-        dropShadowAngle: Math.PI / 6,
-        dropShadowDistance: 6,
-        wordWrap: true,
-        wordWrapWidth: 440,
-        align: "center"
-      })
+      const nameStyle = new TextStyle(
+        typeof this.options.nameStyle == "function"
+          ? this.options.nameStyle(this.options)
+          : {
+              fontFamily:
+                "-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol",
+              fontSize: data.r / 2,
+              fontWeight: "bold",
+              fill: [this.options.color, "#666"], // gradient
+              strokeThickness: 2,
+              dropShadow: true,
+              dropShadowColor: "#000000",
+              dropShadowBlur: 4,
+              dropShadowAngle: Math.PI / 6,
+              dropShadowDistance: 6,
+              wordWrap: true,
+              wordWrapWidth: 440,
+              align: "center"
+            }
+      )
       const nameText = new Text(data.name || "未知姓名", nameStyle)
       this.addChild(nameText)
       nameText.anchor.set(0.5, 0.5)
@@ -161,11 +174,11 @@ class CardSprite extends Sprite {
   onTriggerClearHover = id => {
     if (id !== this.id) {
       this.lightbulb.clear()
-      this.lightbulb.lineStyle(5, 0x000000, 0.3)
+      this.lightbulb.lineStyle(5, this.options.borderColor, 0.3)
       this.lightbulb.drawCircle(0, 0, this.options.data.r + 4)
     } else {
       this.lightbulb.clear()
-      this.lightbulb.lineStyle(8, 0x598dff, 1)
+      this.lightbulb.lineStyle(8, this.options.borderColorHover, 1)
       this.lightbulb.drawCircle(0, 0, this.options.data.r + 10)
     }
   }

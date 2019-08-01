@@ -9,7 +9,11 @@ import zIndexConfig from "../utils/zIndex"
 const defaultProps = {
   R: 80,
   r: 50,
-  lineColor: 0xd2e5ee
+  lineColor: 0xd2e5ee,
+  nameStyle: undefined,
+  backgroundRoundColor: undefined,
+  borderColor: undefined,
+  borderColorHover: undefined
 }
 
 /**
@@ -23,6 +27,12 @@ class MainContainer extends Container {
   constructor(options) {
     super()
 
+    Object.keys(options).forEach(key => {
+      if (typeof options[key] === "undefined") {
+        delete options[key]
+      }
+    })
+
     this.options = Object.assign({}, defaultProps, options)
     this.data = { nodes: {}, links: [] }
     try {
@@ -33,6 +43,12 @@ class MainContainer extends Container {
 
     this.x = this.options.width / 2
     this.y = this.options.height / 2
+    const scaleNum =
+      this.data.distance > 0 && this.data.distance <= 4 * this.options.r
+        ? this.options.height / ((this.data.distance + this.options.R + 4 * this.options.r) * 2)
+        : 1
+
+    this.scale.set(scaleNum)
 
     this.spriteObj = {}
 
@@ -78,6 +94,9 @@ class MainContainer extends Container {
       if (typeof item === "object" && item.coor) {
         const id = item.id
         const round = new Card({
+          nameStyle: this.options.nameStyle,
+          borderColor: this.options.borderColor,
+          borderColorHover: this.options.borderColorHover,
           color: this.options.backgroundRoundColor,
           data: item,
           onClick: this.options.onClick,

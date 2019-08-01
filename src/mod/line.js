@@ -9,6 +9,12 @@ class LineSprite extends Sprite {
   constructor(options) {
     super()
 
+    Object.keys(options).forEach(key => {
+      if (typeof options[key] === "undefined") {
+        delete options[key]
+      }
+    })
+
     this.options = Object.assign({}, defaultProps, options)
 
     this.id = this.options.id

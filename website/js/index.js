@@ -13,7 +13,8 @@ const app = new PixiRelationship({
   data: {
     links: data.links,
     nodes: data.nodes,
-    linksType: ['爱情', '亲情', '友情']
+    linksColors: [0x71b7ff, 0x509838, 0xfd8888, 0xfff36a],
+    linksTypeLabel: ['爱情', '亲情', '友情']
   },
 });
 
