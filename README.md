@@ -1,6 +1,6 @@
 # pixi-relationship
 
-使用 pixijs 模仿此网站关系图谱效果 https://www.sogou.com/tupu/person.html?q=%E9%99%88%E5%A6%8D%E5%B8%8C&id=2636106 
+使用 pixijs 实现关系图谱效果: [https://364734461.github.io/pixi-relationship/](URL)
 
 ### Use
 
@@ -51,7 +51,7 @@ app.init();
 注意事项：
 
 data 数据源格式要求
-``` json
+``` js
 {
   "links": [
     {
@@ -120,7 +120,7 @@ linksTypeLabel 同上，若不传，则不显示 label。
 
 #### 方法
 
-继承于 PIXI.Application 对象。详看：http://pixijs.download/release/docs/PIXI.Application.html
+继承于 PIXI.Application 对象。详看：[http://pixijs.download/release/docs/PIXI.Application.html](URL)
 
 ```js
 app.init() // 初始化
