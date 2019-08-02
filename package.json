@@ -1,8 +1,13 @@
 {
   "name": "pixi-relationship",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "keywords": [
+    "pixi",
+    "pixi.js",
+    "relationship"
+  ],
   "description": "pixi.js to relationship",
-  "repository": "https://github.com/364734461/pixi-relationship.git",
+  "repository": "https://github.com/364734461/pixi-relationship",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "sideEffects": false,

@@ -2,6 +2,9 @@ import PixiRelationship from "../../dist";
 import "../css/index.less";
 import data from '../test.json'
 
+console.log("数据源：")
+console.log(data)
+
 const app = new PixiRelationship({
   containerID: "container",
   backgroundColor: 0xceefff,
