@@ -23,8 +23,8 @@ const app = new PixiRelationship({
   data: {
     links: data.links,
     nodes: data.nodes,
-    linksColors: [0x71b7ff, 0x509838, 0xfd8888, 0xfff36a]
   },
+  linksColors: [0x71b7ff, 0x509838, 0xfd8888, 0xfff36a]
 });
 
 app.init();
