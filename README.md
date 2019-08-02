@@ -1,6 +1,6 @@
 # pixi-relationship
 
-使用 pixijs 实现关系图谱效果: [https://364734461.github.io/pixi-relationship/](URL)
+使用 pixijs 实现关系图谱效果: [Demo](https://364734461.github.io/pixi-relationship/)
 
 ### Use
 
@@ -120,7 +120,7 @@ linksTypeLabel 同上，若不传，则不显示 label。
 
 #### 方法
 
-继承于 PIXI.Application 对象。详看：[http://pixijs.download/release/docs/PIXI.Application.html](URL)
+继承于 [PIXI.Application](https://364734461.github.io/pixi-relationship/) 对象。
 
 ```js
 app.init() // 初始化
