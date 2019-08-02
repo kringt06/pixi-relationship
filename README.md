@@ -120,7 +120,7 @@ linksTypeLabel 同上，若不传，则不显示 label。
 
 #### 方法
 
-继承于 [PIXI.Application](https://364734461.github.io/pixi-relationship/) 对象。
+继承于 [PIXI.Application](http://pixijs.download/release/docs/PIXI.Application.html) 对象。
 
 ```js
 app.init() // 初始化
